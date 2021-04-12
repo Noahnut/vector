@@ -128,8 +128,9 @@ func (this *Vector) Insert(value interface{}, position int) error {
 	iter := this.header
 	pathCount := 0
 
-	for pathCount != position+1 {
+	for pathCount != position {
 		iter = iter.next
+		pathCount++
 	}
 
 	if iter.prev != nil {
@@ -141,6 +142,13 @@ func (this *Vector) Insert(value interface{}, position int) error {
 		iter.prev = &newNode
 		newNode.next = iter
 	}
+
+	if position == 0 {
+		this.header = &newNode
+	}
+
+	this.size++
+	this.capacity++
 
 	return nil
 }
@@ -160,14 +168,17 @@ func (this *Vector) Clear() {
 	iter := this.header
 	index := 0
 
-	for iter != this.end {
+	for iter != nil {
 		tempNext := iter.next
-		if index > 10 {
+		iter.value = nil
+		if index >= 10 {
 			iter = nil
+			this.capacity--
 		}
 		iter = tempNext
 		index++
 	}
+	this.size = 0
 }
 
 func (this *Vector) At(position int) *interface{} {

@@ -1,6 +1,7 @@
 package vector
 
 import (
+	"errors"
 	"testing"
 )
 
@@ -233,5 +234,105 @@ func TestPopBack(t *testing.T) {
 
 	if v.Back() != 420 {
 		t.Errorf("Expect result %d result %d", 420, v.Back())
+	}
+}
+
+func TestAt(t *testing.T) {
+	v := NewVector()
+
+	for i := 10; i <= 200; i += 10 {
+		v.Push_back(i)
+	}
+
+	if *v.At(5) != 60 {
+		t.Errorf("Expect result %d result %d", 60, *v.At(5))
+	}
+
+	if *v.At(0) != 10 {
+		t.Errorf("Expect result %d result %d", 10, *v.At(0))
+	}
+
+	if *v.At(30) != nil {
+		t.Errorf("Expect result nil")
+	}
+
+	for i := 0; i < 200; i += 10 {
+		value := (*v.At(i / 10)).(int)
+		if i+10 != value {
+			t.Errorf("Expect result %d result %d", i, value)
+		}
+	}
+
+	*v.At(5) = 80
+
+	if *v.At(5) != 80 {
+		t.Errorf("Expect result %d result %d", 80, *v.At(5))
+	}
+}
+
+func TestClear(t *testing.T) {
+	v := NewVector()
+
+	for i := 10; i <= 200; i += 10 {
+		v.Push_back(i)
+	}
+
+	v.Clear()
+
+	if v.Size() != 0 && v.Capacity() != 10 {
+		t.Error("Clear Fail")
+	}
+}
+
+func TestInsert(t *testing.T) {
+	v := NewVector()
+
+	for i := 10; i <= 200; i += 10 {
+		v.Push_back(i)
+	}
+
+	for i := 0; i < 5; i++ {
+		v.Insert(10*i, i+2)
+	}
+
+	for i := 0; i < 5; i++ {
+		if *v.At(i + 2) != 10*i {
+			t.Errorf("Expect result %d result %d", 10*i, *v.At(i + 2))
+		}
+	}
+
+	v.Insert(70, 0)
+	if v.Front() != 70 {
+		t.Errorf("Expect result %d result %d", 70, v.Front())
+	}
+
+	v.Insert(90, v.Size())
+	if v.Back() != 90 {
+		t.Errorf("Expect result %d result %d", 70, v.Back())
+	}
+
+	if v.Capacity() != 47 {
+		t.Errorf("Expect result %d result %d", 47, v.Capacity())
+	}
+
+	if v.Size() != 27 {
+		t.Errorf("Expect result %d result %d", 47, v.Size())
+	}
+
+	err := v.Insert(10, 30)
+	if err == errors.New("You position is out of size") {
+		t.Error("The error result is not correct")
+	}
+
+	for i := 0; i <= 60; i++ {
+		v.Insert(10*i, i)
+	}
+
+	if v.Capacity() != 108 {
+		t.Errorf("Expect result %d result %d", 108, v.Capacity())
+	}
+
+	if v.Size() != 88 {
+		t.Errorf("Expect result %d result %d", 88, v.Size())
 	}
 }
