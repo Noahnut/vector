@@ -13,9 +13,37 @@ This Size is mean which node actually have the value in the linked list and Capa
 linked list.
 If the size is bigger than the Capacity will extend the linked list Capacity to the twice of current Capacity.
 ## install
-----
     go get github.com/Noahnut/vector
 
+## Usage
+```go
+// Create the new Vector
+v := NewVector()
+
+// add the new element to the vector end
+v.Push_back(10)
+
+// add the new element to vector header
+v.Push_front(20) 
+
+// vector header value 20
+v.Front() 
+
+// vector end value 10
+v.Back() 
+
+// insert element to the 1 position value is 30
+v.Insert(30,1)
+
+// get the memory address of the 1 node
+*v.At(1)
+
+// take the last element out 
+v.Pop_back()
+
+// take the first element out
+v.Pop_front()
+```
 ### Vector struct
 vector basic struct to record linked list header, tail and end
 ```go
