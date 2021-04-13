@@ -1,6 +1,9 @@
 package vector
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 /*
 This is simple C++ vector implement by the golang
@@ -153,11 +156,35 @@ func (this *Vector) Insert(value interface{}, position int) error {
 	return nil
 }
 
-func (this *Vector) Erase(position int) error {
+func (this *Vector) Erase(position int) {
 	if position > this.size {
-		return errors.New("You position is out of size")
+		fmt.Print("You position is out of size")
+		return
 	}
-	return nil
+
+	iter := this.header
+	pathCount := 0
+
+	for pathCount != position {
+		iter = iter.next
+		pathCount++
+	}
+
+	if iter.prev != nil {
+		iter.prev.next = iter.next
+		if iter.next != nil {
+			iter.next.prev = iter.prev
+		}
+	}
+
+	if position == 0 {
+		this.header = iter.next
+	}
+
+	this.size--
+	this.capacity--
+
+	iter = nil
 }
 
 func (this *Vector) Swap(v *Vector) bool {

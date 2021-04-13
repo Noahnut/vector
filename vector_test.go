@@ -336,3 +336,28 @@ func TestInsert(t *testing.T) {
 		t.Errorf("Expect result %d result %d", 88, v.Size())
 	}
 }
+
+func TestEarse(t *testing.T) {
+	v := NewVector()
+
+	for i := 10; i <= 200; i += 10 {
+		v.Push_back(i)
+	}
+
+	v.Erase(0)
+
+	if v.Front() != 20 {
+		t.Errorf("Expect result %d result %d", 20, v.Front())
+	}
+
+	v.Erase(4)
+	if *v.At(4) != 70 {
+		t.Errorf("Expect result %d result %d", 70, *v.At(4))
+	}
+
+	v.Erase(v.Size() - 1)
+
+	if *v.At(v.Size() - 1) != 190 {
+		t.Errorf("Expect result %d result %d", 190, *v.At(v.Size() - 1))
+	}
+}
